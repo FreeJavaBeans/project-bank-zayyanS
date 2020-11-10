@@ -4,12 +4,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
+
 import java.util.Scanner;
-import java.util.Set;
+
+
 
 import bank.util.ConnectionUtil;
 
+
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.LogManager;  
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;  
 public class OpenApp {
 
 	private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
@@ -24,14 +30,17 @@ public class OpenApp {
 	private double savingsAccountDeposit;
 	
 	
+	private static final Logger logger = LogManager.getLogger(OpenApp.class); 
+	
 	
 	
 	public OpenApp(int mybanker_id, int age1) {
 		super();
+		PropertyConfigurator.configure("log4j.properties");  
 		 Scanner scan = new Scanner(System.in);
 		 int input;
 		 
-		 int banker_id=2;
+		 int banker_id;
 		if(age1 >=16 && age1<=19){
 			do {
 		
@@ -48,41 +57,60 @@ public class OpenApp {
 			System.out.println("What is the banker id of the account you would like to make the deposit? ");
 			 banker_id = scan.nextInt();
 			System.out.println("How much would you like to deposit? ");
-			float deposit = scan.nextInt();
+			double deposit = scan.nextInt();
 			withdrawlSavings(deposit, mybanker_id);
 			depositChecking(deposit, banker_id);
 			
 			myBankAccount(mybanker_id);
+			
+			logger.info("Bank Acount: "+ mybanker_id+ " sent $"+deposit );
+		      logger.info("Bank Acount: "+ banker_id+ " recieved $"+deposit +"into checking account");
+			
 			break;
 			
 		case 3: 
 			System.out.println("This withdraw will go into your savings account.");
 			System.out.println("How much would you like to deposit? ");
-			float withdraw = scan.nextInt();
+			double withdraw = scan.nextInt();
 			withdrawlChecking(withdraw, mybanker_id);
 			depositChecking(withdraw, mybanker_id);
 			
 			myBankAccount(mybanker_id);
+			
+			logger.info("Bank Acount: "+ mybanker_id+ " sent $"+withdraw);
+			logger.info("Bank Acount: "+ mybanker_id+ " recieved $"+withdraw + "into checking account");
+			
 			break;
 			
 		case 4:
 			System.out.println("This deposit will come from your checking account.");
+			System.out.println("What is the banker id of the account you would like to make the deposit? ");
+			 banker_id = scan.nextInt();
 			System.out.println("How much would you like to deposit? ");
-			int withdrawl = scan.nextInt();
+			double withdrawl = scan.nextInt();
 			withdrawlChecking(withdrawl, mybanker_id);
 			depositSavings(withdrawl, banker_id);
 			
 			myBankAccount(mybanker_id);
+			
+			logger.info("Bank Acount: "+ mybanker_id+ " sent $"+withdrawl );
+			logger.info("Bank Acount: "+ banker_id+ " recieved $"+withdrawl + "into savings account");
+			
 			break;
 			
 		case 5: 
 			System.out.println("This withdraw will go into your checking account.");
 			System.out.println("How much would you like to withdraw? ");
-			float withdrawll = scan.nextInt();
+			double withdrawll = scan.nextInt();
 			withdrawlSavings(withdrawll, mybanker_id);
 			depositChecking(withdrawll, mybanker_id);
 			
 			myBankAccount(mybanker_id);
+			
+			logger.info("Bank Acount: "+ mybanker_id+ " sent $"+withdrawll);
+			logger.info("Bank Acount: "+ mybanker_id+ " recieved $"+withdrawll + "into checking account");
+			
+			
 			break;
 			
 		case 6:
@@ -106,6 +134,8 @@ public class OpenApp {
 				switch(input) {
 				case 1: 
 					myBankAccount(mybanker_id);
+					
+					
 					break;
 					
 				case 2: 
@@ -114,11 +144,15 @@ public class OpenApp {
 					System.out.println("What is the banker id of the account you would like to make the deposit? ");
 					banker_id = scan.nextInt();
 					System.out.println("How much would you like to deposit? ");
-					float deposit = scan.nextInt();
+					double deposit = scan.nextInt();
 					depositSavings(deposit, banker_id);
 					withdrawlSavings(deposit, mybanker_id);
 					
 					myBankAccount(mybanker_id);
+					
+					logger.info("Bank Acount: "+ mybanker_id+ " sent $"+deposit);
+					logger.info("Bank Acount: "+ banker_id+ " recieved $"+deposit + "into savings account");
+					
 					break;
 					
 				case 3: 
@@ -134,7 +168,7 @@ public class OpenApp {
 				}while(input !=3 );
 		}
 		
-	
+	scan.close();
 	}
 	
 	public OpenApp() {
@@ -197,105 +231,129 @@ public class OpenApp {
 	
 	
 	
-	protected void depositChecking(float deposit, int banker_id) {
+	protected void depositChecking(double deposit, int banker_id) {
 		 
 		 
-		 String depositChecking = "update bankaccount set checkingaccountdeposithistory = now(), checkingaccountbalance = checkingaccountbalance + ?, checkingaccountdeposit = ? where id = ?;" ;
-	
+		 String depositChecking = "update \"SaversSavingsBank\".bankaccount set checkingHistory = now(), checkingaccountbalance = checkingaccountbalance + ?, checkingaccountdeposit = ? where id = ?;" ;
+		 PropertyConfigurator.configure("log4j.properties");
 	 try {
 		 PreparedStatement ps = conn.prepareStatement(depositChecking);
-		 ps.setFloat(1,deposit);
-		 ps.setFloat(2,deposit);
+		 ps.setDouble(1,deposit);
+		 ps.setDouble(2,deposit);
 		 ps.setInt(3, banker_id);
-		 ResultSet r = ps.executeQuery();
-		 if(r.next()) {
+		 int r = ps.executeUpdate();
+		 if(r !=0) {
 			 System.out.println("Deposit complete!");
+			   
+			 
+		      
+		      //logger.debug("Sample debug message");
 		 }
 		 else {
 			 System.out.println("Deposit imcomplete.");
+			 BasicConfigurator.configure();
+			 logger.error("Bank Acount: "+ banker_id+ " failed to recieve a deposit of $"+deposit);
 		 }
 		 
 		 
 	 }catch(SQLException e)
 	 { e.printStackTrace();
 	 System.out.println("SQL imcomplete");
+	 
+	 BasicConfigurator.configure();
+	 logger.fatal("Bank Acount: "+ banker_id+ " ULTIMATELY FAILED to recieve a deposit of $"+deposit);
 	 }
 	 
 	 
 	 }
-	protected void depositSavings(float deposit, int banker_id) {
+	protected void depositSavings(double deposit, int banker_id) {
 		 
-		 
-		 String depositChecking = "update bankaccount set savingsaccountdeposithistory = now(), savingsaccountbalance = savingsaccountbalance + ?, savingsaccountdeposit = ? where id = ?;" ;
+		PropertyConfigurator.configure("log4j.properties");
+		 String depositChecking = "update \"SaversSavingsBank\".bankaccount set savingsaccounthistory = now(), savingsaccountbalance = savingsaccountbalance + ?, savingsaccountdeposit = ? where id = ?;" ;
 	
 	 try {
 		 PreparedStatement ps = conn.prepareStatement(depositChecking);
-		 ps.setFloat(1,deposit);
-		 ps.setFloat(2,deposit);
+		 ps.setDouble(1,deposit);
+		 ps.setDouble(2,deposit);
 		 ps.setInt(3, banker_id);
-		 ResultSet r = ps.executeQuery();
-		 if(r.next()) {
+		 int r = ps.executeUpdate();
+		 if(r!=0) {
 			 System.out.println("Deposit complete!");
 		 }
 		 else {
 			 System.out.println("Deposit imcomplete.");
+			 BasicConfigurator.configure();
+			 logger.error("Bank Acount: "+ banker_id+ " failed to recieve a deposit of $"+deposit);
 		 }
 		 
 		 
 	 }catch(SQLException e)
 	 { e.printStackTrace();
 	 System.out.println("SQL imcomplete");
+	 
+	 BasicConfigurator.configure();
+	 logger.fatal("Bank Acount: "+ banker_id+ " ULTIMATELY FAILED to recieve a deposit of $"+deposit);
 	 }
 	 
 	 
 	 }
-	protected void withdrawlChecking(float withdrawl, int banker_id) {
+	protected void withdrawlChecking(double withdrawl, int banker_id) {
 		 
-		 
-		 String withdrawlChecking = "update bankaccount set checkingaccountwithdrawhistory = now(), checkingaccountbalance = checkingaccountbalance - ?, checkingaccountdeposit = ? where id = ?;" ;
+		PropertyConfigurator.configure("log4j.properties");
+		 String withdrawlChecking = "update \"SaversSavingsBank\".bankaccount set checkingaccounthistory = now(), checkingaccountbalance = checkingaccountbalance - ?, checkingaccountdeposit = ? where id = ?;" ;
 	
 	 try {
 		 PreparedStatement ps = conn.prepareStatement(withdrawlChecking);
-		 ps.setFloat(1,withdrawl);
-		 ps.setFloat(2,withdrawl);
+		 ps.setDouble(1,withdrawl);
+		 ps.setDouble(2,withdrawl);
 		 ps.setInt(3, banker_id);
-		 ResultSet r = ps.executeQuery();
-		 if(r.next()) {
+		 int r = ps.executeUpdate();
+		 if(r!=0) {
 			 System.out.println("withdrawl complete!");
 		 }
 		 else {
-			 System.out.println("withdrawl imcomplete.");
+			 System.out.println("Deposit imcomplete.");
+			 BasicConfigurator.configure();
+			 logger.error("Bank Acount: "+ banker_id+ " failed to recieve a deposit of $"+withdrawl);
 		 }
 		 
 		 
 	 }catch(SQLException e)
 	 { e.printStackTrace();
 	 System.out.println("SQL imcomplete");
+	 
+	 BasicConfigurator.configure();
+	 logger.fatal("Bank Acount: "+ banker_id+ " ULTIMATELY FAILED to recieve a deposit of $"+withdrawl);
 	 }
 	 
 	 }	 
-	protected void withdrawlSavings(float withdrawl, int banker_id) {
+	protected void withdrawlSavings(double withdrawl, int banker_id) {
 		 
-		 
-		 String withdrawlChecking = "update bankaccount set savingsaccountwithdrawhistory = now(), savingsaccountbalance = savingsaccountbalance - ?, savingsaccountdeposit = ? where id = ?;" ;
+		PropertyConfigurator.configure("log4j.properties");
+		 String withdrawlChecking = "update \"SaversSavingsBank\".bankaccount set savingsaccounthistory = now(), savingsaccountbalance = savingsaccountbalance - ?, savingsaccountdeposit = ? where id = ?;" ;
 	
 	 try {
 		 PreparedStatement ps = conn.prepareStatement(withdrawlChecking);
-		 ps.setFloat(1,withdrawl);
-		 ps.setFloat(2,withdrawl);
+		 ps.setDouble(1,withdrawl);
+		 ps.setDouble(2,withdrawl);
 		 ps.setInt(3, banker_id);
-		 ResultSet r = ps.executeQuery();
-		 if(r.next()) {
+		 int r = ps.executeUpdate();
+		 if(r!=0) {
 			 System.out.println("withdrawl complete!");
 		 }
 		 else {
-			 System.out.println("withdrawl imcomplete.");
+			 System.out.println("Deposit imcomplete.");
+			 BasicConfigurator.configure();
+			 logger.error("Bank Acount: "+ banker_id+ " failed to recieve a deposit of $"+withdrawl);
 		 }
 		 
 		 
 	 }catch(SQLException e)
 	 { e.printStackTrace();
 	 System.out.println("SQL imcomplete");
+	 
+	 BasicConfigurator.configure();
+	 logger.fatal("Bank Acount: "+ banker_id+ " ULTIMATELY FAILED to recieve a deposit of $"+withdrawl);
 	 }
 	 }	 
 

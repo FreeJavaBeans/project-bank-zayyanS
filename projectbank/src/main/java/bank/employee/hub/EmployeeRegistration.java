@@ -14,7 +14,7 @@ import bank.exceptions.UserSignUpFailedException;
 import bank.user.hub.UserRegistration;
 import bank.util.ConnectionUtil;
 
-final  class EmployeeRegistration implements UserRegistration{
+public  class EmployeeRegistration implements UserRegistration{
 
 	private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
 	private static Scanner sc = new Scanner(System.in);

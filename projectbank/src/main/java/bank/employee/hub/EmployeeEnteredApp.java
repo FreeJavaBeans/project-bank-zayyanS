@@ -39,10 +39,10 @@ public class EmployeeEnteredApp {
 		
 			do {
 		
-		System.out.println("Welcome Employee "+employee_id+" to the Savers Savings Bank Employee Appplication. Please look at our menu and choose a number between 1 -10.  \n \n 1. View your account "
+		System.out.println("Welcome Employee "+employee_id+" to the Savers Savings Bank Employee Appplication.\n Please look at our menu and choose a number between 1 -10.  \n \n 1. View your account "
 				+ "\n 2. View all employee accounts \n 3. View one employee account \n 4. View all our customer information "
-				+ "\n 5. View one of our customer's information \n 6. View all customer bank accounts \n 7. View one customer's bank account "
-				+ "\n 8. Terminate an employee record \n 9. Terminate a customer account \n10. Exit app");
+				+ "\n 5. View one of our customer's information \n 6. View all customer bank accounts \n 7. See a log of all transactions \n 8. View one customer's bank account "
+				+ "\n 9. Terminate an employee record \n10. Terminate a customer account \n11. Exit app");
 		 input = scan.nextInt();
 		
 		switch(input) {
@@ -77,23 +77,26 @@ public class EmployeeEnteredApp {
 			break;
 		case 7: 
 			
+			logTransactionFiles();
+			break;
+		case 8: 
 			System.out.println("Which customer's bank account would you like to see? ");
 			int ba = scan.nextInt();
 			seeOneCustomerFileInfo(ba);
 			break;
-		case 8: 
+		case 9: 
 			System.out.println("Which employee account will you be terminating? ");
 			int delemp = scan.nextInt();
 			terminateEmployeeFile(delemp, employee_id);
 			
 			break;
-		case 9: 
+		case 10: 
 			
 			System.out.println("Which customer account will you be terminating? ");
 			int delban = scan.nextInt();
 			rejectCustomerFiles(delban, employee_id);
 			break;
-		case 10: 
+		case 11: 
 			System.out.println("Application terminated. Good bye!");
 			break;
 			
@@ -113,6 +116,34 @@ public class EmployeeEnteredApp {
 	
 	
 	
+private void logTransactionFiles() {
+		// TODO Auto-generated method stub
+		
+
+		try {
+			String log = "select * from \"SaversSavingsBank\".logs;";
+			PreparedStatement ps = conn.prepareStatement(log);
+			ResultSet r = ps.executeQuery();
+			while(r.next()){
+				String id = r.getString("id");
+				String date = r.getString("dated");
+				String logger = r.getString("logger");
+				String level = r.getString("level");
+				String message = r.getString("message");
+				
+				
+				String b = "\n Id: "+ id + "\n Date: " + date +"\n Logger: "+ logger + "\n Level: "+level + "\n Message: "+ message+ "\n ";
+				System.out.println(b);
+			}
+		
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
 private  Set<EmployeeRegistration> seeAllEmployeeInfo() {
 Scanner sc = new Scanner(System.in);
 		
