@@ -113,9 +113,10 @@ public  class EmployeeRegistration implements UserRegistration{
 		
 		System.out.println("What is your hired jobtitle: ");
 		jobtitle = sc.nextLine();
-		System.out.println("------------------------------------------");
-			CorrectInfo();
-		System.out.println("------------------------------------------");
+		System.out.println("------------------------------------------------------ \n ");
+		  CorrectInfo();
+		  
+		  System.out.println("------------------------------------------------------ \n ");
 		
 		username = firstName.substring(0,1)+ lastName;
 		username = username.toLowerCase();
