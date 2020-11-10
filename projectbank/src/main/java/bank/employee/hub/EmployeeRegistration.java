@@ -113,8 +113,9 @@ public  class EmployeeRegistration implements UserRegistration{
 		
 		System.out.println("What is your hired jobtitle: ");
 		jobtitle = sc.nextLine();
-		
-		
+		System.out.println("------------------------------------------");
+			CorrectInfo();
+		System.out.println("------------------------------------------");
 		
 		username = firstName.substring(0,1)+ lastName;
 		username = username.toLowerCase();
@@ -204,7 +205,7 @@ System.out.println("\n Your company username is : " + username);
 			//take to employee log in to try and login
 			
 			
-			//LoginEmployee.check(username,password);
+			
 			
 		}
 		else if(yn.equals("n")) {
