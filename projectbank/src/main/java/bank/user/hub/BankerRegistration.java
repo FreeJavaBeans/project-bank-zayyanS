@@ -119,9 +119,7 @@ guardianname = sc.nextLine();
 		    
 		}
 
-	public static void main(String[] args) {
-		BankerRegistration br = new BankerRegistration();
-		br.display();	}
+	
 	
 	
 	
@@ -137,7 +135,7 @@ public void UserSignUpDAO() throws UserSignUpFailedException{
 	 
 	 
 	 
-	 String newUSerInfo = "INSERT INTO \"SaversSavingsBank\".banker_records( username, \"password\") VALUES (?, ?) ;";
+	 String newUSerInfo = "INSERT INTO \"SaversSavingsBank\".banker_records( age,username, \"password\") VALUES (?, ?, ?) ;";
 	 
 
 
@@ -145,9 +143,9 @@ public void UserSignUpDAO() throws UserSignUpFailedException{
 
 			            // Step 2:Create a statement using connection object
 			            PreparedStatement preparedStatement = con.prepareStatement(newUSerInfo);
-			            
-			            preparedStatement.setString(1, getUsername());
-			            preparedStatement.setString(2, getPassword());
+			            preparedStatement.setInt(1, getAge1());
+			            preparedStatement.setString(2, getUsername());
+			            preparedStatement.setString(3, getPassword());
 			          
 int result = preparedStatement.executeUpdate();
 			           

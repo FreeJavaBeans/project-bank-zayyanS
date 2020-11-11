@@ -30,22 +30,22 @@ public  class EmployeeRegistration implements UserRegistration{
     private Long contact1;
     private String jobtitle;
     
-	protected void bankMan() throws UserNotFoundException {
+	protected void bankWoman() throws UserNotFoundException {
 		ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
 		Connection conn = cu.getConnection();
 		
-		System.out.println("Hello Geoff. To see all of the employee information please enter your username and password below: \n Username:");
+		System.out.println("Hello Zayyan. To see all of the employee information please enter your username and password below: \n Username:");
 		String username = sc.nextLine();
 		
 		System.out.println("Password: ");
 		String password = sc.nextLine();
-		if(username.equals("gwiggings")) {
+		if(username.equals("zswaby")) {
 	PreparedStatement ps1;
 	
 	
 	try {
 		ps1 = conn.prepareStatement
-				("select * from \"SaversSavingsBank\".employee_records where username = 'gwiggins' and \"password\" = ?;");
+				("select * from \"SaversSavingsBank\".employee_records where username = 'zswaby' and \"password\" = ?;");
 		ps1.setString(1, password);
 		ResultSet r1 = ps1.executeQuery();
 		
@@ -73,8 +73,12 @@ public  class EmployeeRegistration implements UserRegistration{
 	 public void display() {
 		// TODO Auto-generated method stub
 		 
-		 
-		 
+		 System.out.println("Hello. Welcome to the Starters Savings Savings Bank. We are a bank that caters to "
+			+ "young adults to teach them how \n to start saving their money in order to become a fiscally responsible "
+			+ "adult in the near future. Here at SSSB we \n cater to people between the ages of 10 and 19. We are the young adult safe banking way. "
+			+ "As an employee of this bank \n you will have access to view all of our bankers information. You are now a trusted employee and confidentiality \n is a must!"
+			+ " To continue and open an account with us, please press enter.");
+		 sc.nextLine();
 		System.out.println("Hello. Please fill in all of the information. \n Name: " );
 		name = sc.nextLine();
 		name = name.toUpperCase();
@@ -130,16 +134,20 @@ System.out.println("\n Your company username is : " + username);
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}}
+		
+	}
+		
+		
+	 }
 
 	
 
 	public void UserDAO() throws UserSignUpFailedException {
 		// TODO Auto-generated method stub
 		
-		 String registerUser = "INSERT INTO employees(first_name, last_name,\"age\", email, contact, jobtitle) VALUES(?, ?, ?, ?, ?, ?);";
+		 String registerUser = "INSERT INTO \"SaversSavingsBank\".employees(first_name, last_name,\"age\", email, contact, jobtitle,activity) VALUES(?, ?, ?, ?, ?, ?, 'Y');";
 		 
-		 String newUSerInfo = "INSERT INTO employee_records( username, \"password\") VALUES (?, ?);";
+		 String newUSerInfo = "INSERT INTO \"SaversSavingsBank\".employee_records( username, \"password\") VALUES (?, ?);";
 
 
 
@@ -154,12 +162,12 @@ System.out.println("\n Your company username is : " + username);
 				            preparedStatement.setString(4, getEmail());
 				            preparedStatement.setLong(5, getContact1());
 				            preparedStatement.setString(6, getJobtitle());
-				            ResultSet result = preparedStatement.executeQuery();
+				            int result = preparedStatement.executeUpdate();
 				    			            PreparedStatement ps = con.prepareStatement(newUSerInfo);
 				    			            
 				    			            ps.setString(1, getUserName());
 				    			            ps.setString(2, getPassword());
-				    			           ResultSet results = ps.executeQuery();
+				    			           int results = ps.executeUpdate();
 				    			            
 				            System.out.println(preparedStatement);
 				            System.out.println(getUserName());
@@ -167,15 +175,15 @@ System.out.println("\n Your company username is : " + username);
 				            // Step 3: Execute the query or update query
 				              
 				              
-				            if(result.next() && result.next()) {
+				            if(result!=0 && results!=0) {
 				            	System.out.println("User information recorded and user sign up complete.");
 				            	
 				            }
-				            else if (result.next()) {
+				            else if (result!=0) {
 				            	System.out.println("User information recorded BUT user sign up incomplete.");
 				            }
 				            
-				            else if (results.next()) {
+				            else if (results!=0) {
 				            	System.out.println("User information NOT recorded BUT user sign up IS complete.");
 				            }
 				            else{

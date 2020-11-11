@@ -22,9 +22,7 @@ public class EmployeeLogin {
 	private static Scanner sc = new Scanner(System.in);
 	
 	
-	protected int getEmployeeId() {
-		return employee_id;
-	}
+	
 	
 	
 	
@@ -88,11 +86,11 @@ public class EmployeeLogin {
 	            
 	            System.out.println("\n Your id number is: "+ id);
 	            PreparedStatement ps1 = conn.prepareStatement
-	            		("update \"SaversSavingsBanker\".employee_records set "
+	            		("update \"SaversSavingsBank\".employee_records set "
 	            				+ "last_shift = now() where id = " + id+";" );
 	            int result = ps1.executeUpdate();
 	            if(result != 0 ) {
-	            	System.out.println("Your login has been recorded. ");
+	            	System.out.println("\n Your login has been recorded. ");
 	            }
 	            EmployeeEnteredApp eea = new EmployeeEnteredApp(id);
 	            
@@ -131,7 +129,7 @@ do {
 			 EmployeeRegistration er = new EmployeeRegistration();
 			 try {
 				
-				 er.bankMan();
+				 er.bankWoman();
 				 
 				 
 			} catch (UserNotFoundException e) {

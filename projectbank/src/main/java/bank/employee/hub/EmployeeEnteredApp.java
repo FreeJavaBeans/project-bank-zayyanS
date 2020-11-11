@@ -19,12 +19,9 @@ public class EmployeeEnteredApp {
 	private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
 	private static Connection conn = cu.getConnection();
 	
+	private static  Scanner scan = new Scanner(System.in);
 	
 	
-	public static void main(String[] args) {
-		EmployeeEnteredApp eea = new EmployeeEnteredApp(1);
-		
-	}
 	
 	public EmployeeEnteredApp(){
 		super();
@@ -34,15 +31,15 @@ public class EmployeeEnteredApp {
 	
 	protected EmployeeEnteredApp(int employee_id) {
 		super();
-		 Scanner scan = new Scanner(System.in);
+		
 		 int input;
 		
 			do {
 		
-		System.out.println("Welcome Employee "+employee_id+" to the Savers Savings Bank Employee Appplication.\n Please look at our menu and choose a number between 1 -10.  \n \n 1. View your account "
+		System.out.println("Welcome Employee "+employee_id+" to the Starters Savings Savings Bank Employee Appplication.\n Please look through our menu and choose a number between 1 -11.  \n \n 1. View your account "
 				+ "\n 2. View all employee accounts \n 3. View one employee account \n 4. View all our customer information "
-				+ "\n 5. View one of our customer's information \n 6. View all customer bank accounts \n 7. See a log of all transactions \n 8. View one customer's bank account "
-				+ "\n 9. Terminate an employee record \n10. Terminate a customer account \n11. Exit app");
+				+ "\n 5. View one of our customer's information \n 6. See a log of all transactions \n 7. View all customer bank accounts \n 8. View one customer's bank account "
+				+ "\n 9. Terminate an employee record \n10. Terminate a customer account \n11. Logout of application");
 		 input = scan.nextInt();
 		
 		switch(input) {
@@ -72,10 +69,10 @@ public class EmployeeEnteredApp {
 			seeOneCustomerInfo(ban);
 			break;
 			
-		case 6:
+		case 7:
 			seeAllCustomerFileInfo();
 			break;
-		case 7: 
+		case 6: 
 			
 			logTransactionFiles();
 			break;
@@ -144,17 +141,18 @@ private void logTransactionFiles() {
 		
 	}
 
-private  Set<EmployeeRegistration> seeAllEmployeeInfo() {
-Scanner sc = new Scanner(System.in);
-		
-		System.out.println("Hello Geoff. To see all of the employee information please enter your username and password below: \n Username:");
-		String username = sc.nextLine();
+private  void seeAllEmployeeInfo() {
+
+	scan.nextLine();
+		System.out.println("Hello Zayyan. To see all of the employee information please enter your username and password below: \n Username:");
+		String username = scan.nextLine();
 		System.out.println("Password: ");
-		String password = sc.nextLine();
-		String bankman = "select * from \"SaversSavingsBank\".employee_records where username = 'gwiggins' and \"password\" = ?;";//input username but not the password
+		String password = scan.nextLine();
+		if(username.equals("zswaby")) {
+		String bankman = "select * from \"SaversSavingsBank\".employee_records where username = 'zswaby' and \"password\" = ?;";//input username but not the password
 	PreparedStatement ps1;
 	
-	Set<EmployeeRegistration> allEmployeesInfo = new HashSet<EmployeeRegistration>();
+	//Set<EmployeeRegistration> allEmployeesInfo = new HashSet<EmployeeRegistration>();
 	try {
 		ps1 = conn.prepareStatement(bankman);
 		ps1.setString(1, password);
@@ -168,7 +166,7 @@ Scanner sc = new Scanner(System.in);
 			String all = "select * from \"SaversSavingsBank\".employees order by id;";
 			PreparedStatement ps = conn.prepareStatement(all);
 			ResultSet r = ps.executeQuery();
-			String allInfo = "select * from \"SaversSavingsBank\".employee_records ;"; 
+			String allInfo = "select * from \"SaversSavingsBank\".employee_records order by id;"; 
 			PreparedStatement prepStat = conn.prepareStatement(allInfo);
 			ResultSet rs = prepStat.executeQuery();
 			
@@ -198,21 +196,25 @@ Scanner sc = new Scanner(System.in);
 			catch(SQLException e) {
 				e.printStackTrace();
 			}
-			
-	sc.close();	
+		}else {
+		System.out.println("Sorry you are not authorized to access this part of the application. Please log back in and choose another option on the menu.");
+		EmployeeLogin ea = new EmployeeLogin();
+		ea.display();
+		}
 		
-		return allEmployeesInfo;
+		//return allEmployeesInfo;
 		
 	}
 	
-private  Set<EmployeeRegistration> seeOneEmployeeInfo(int employees_id) {
-Scanner sc = new Scanner(System.in);
-		
-		System.out.println("Hello Geoff. To see all of the employee information please enter your username and password below: \n Username:");
-		String username = sc.nextLine();
+private  void seeOneEmployeeInfo(int employees_id) {
+
+	scan.nextLine();
+		System.out.println("Hello Zayyan. To see all of the employee information please enter your username and password below: \n Username:");
+		String username = scan.nextLine();
 		System.out.println("Password: ");
-		String password = sc.nextLine();
-		String bankman = "select * from \"SaversSavingsBank\".employee_records where username = 'gwiggins' and \"password\" = ?;";//input username but not the password
+		String password = scan.nextLine();
+		if(username.equals("zswaby")) {
+		String bankman = "select * from \"SaversSavingsBank\".employee_records where username = 'zswaby' and \"password\" = ?;";//input username but not the password
 	PreparedStatement ps1;
 	
 	Set<EmployeeRegistration> oneEmployeesInfo = new HashSet<EmployeeRegistration>();
@@ -263,26 +265,31 @@ Scanner sc = new Scanner(System.in);
 				e.printStackTrace();
 			}
 			
-	sc.close();	
-		
-		return oneEmployeesInfo;
+	   	
+		}
+		else {
+			System.out.println("Sorry you are not authorized to access this part of the application. Please log back in and choose another option on the menu.");
+			EmployeeLogin ea = new EmployeeLogin();
+			ea.display();
+		}
+		//return oneEmployeesInfo;
 		
 	}
-private  Set<EmployeeRegistration> seeMyInfo( int employee_id) {
-Scanner sc = new Scanner(System.in);
+
+private  void seeMyInfo(int employee_id) {
+
 	
 	
-	Set<EmployeeRegistration> me = new HashSet<EmployeeRegistration>();
+	
 	try {
-		
-			String all = "select * from \"SaversSavingsBank\".employees where id = ?;";
-			PreparedStatement ps = conn.prepareStatement(all);
+			
+			PreparedStatement ps = conn.prepareStatement("select * from \"SaversSavingsBank\".employees where id = ?;");
 			ps.setInt(1,employee_id);
 			
 			ResultSet r = ps.executeQuery();
 			
-			String allInfo = "select * from \"SaversSavingsBank\".employee_records where id = ?;"; 
-			PreparedStatement prepStat = conn.prepareStatement(allInfo);
+			
+			PreparedStatement prepStat = conn.prepareStatement("select * from \"SaversSavingsBank\".employee_records where id = ?;");
 			prepStat.setInt(1,employee_id);
 			
 			ResultSet rs = prepStat.executeQuery();
@@ -313,14 +320,14 @@ Scanner sc = new Scanner(System.in);
 				e.printStackTrace();
 			}
 			
-	sc.close();	
+	   	
 		
-		return me;
+		
 	    
 	}
 
 	private  Set<BankerRegistration> seeAllCustomersInfo() {
-Scanner sc = new Scanner(System.in);
+
 		
 		
 	Set<BankerRegistration> allBankerInfo = new HashSet<BankerRegistration>();
@@ -328,7 +335,7 @@ Scanner sc = new Scanner(System.in);
 		
 		
 		
-			String all = "select * from \"SaversSavingsBank\".banker order by id;";
+			String all = "select * from \"SaversSavingsBank\".banker where \"Active\" = 'Y' order by id;";
 			PreparedStatement ps = conn.prepareStatement(all);
 			ResultSet r = ps.executeQuery();
 			String allInfo = "select * from \"SaversSavingsBank\".banker_records ;"; 
@@ -364,13 +371,13 @@ Scanner sc = new Scanner(System.in);
 				e.printStackTrace();
 			}
 			
-	sc.close();	
+	   	
 		
 		return allBankerInfo;
 	}
 	
 	private  Set<BankerRegistration> seeOneCustomerInfo(int banker_id) {
-		Scanner sc = new Scanner(System.in);
+		
 		
 		
 		Set<BankerRegistration> oneBankerInfo = new HashSet<BankerRegistration>();
@@ -416,13 +423,13 @@ Scanner sc = new Scanner(System.in);
 					e.printStackTrace();
 				}
 				
-		sc.close();	
+		   	
 			
 			return oneBankerInfo;
 	}
 
 	private  Set<BankerRegistration> seeOneCustomerFileInfo(int banker_id) {
-Scanner sc = new Scanner(System.in);
+
 		
 		
 		Set<BankerRegistration> oneBankerFileAccount = new HashSet<BankerRegistration>();
@@ -469,13 +476,13 @@ Scanner sc = new Scanner(System.in);
 					e.printStackTrace();
 				}
 				
-		sc.close();	
+		   	
 			
 			return oneBankerFileAccount;
 	}
 
 	private  Set<BankerRegistration> seeAllCustomerFileInfo() {
-Scanner sc = new Scanner(System.in);
+
 		
 		
 		Set<BankerRegistration> allBankerFileAccount = new HashSet<BankerRegistration>();
@@ -508,13 +515,19 @@ Scanner sc = new Scanner(System.in);
 					float setSavingsAccountBalance = rs.getFloat("savingsAccountBalance");
 					float sdeposit = rs.getFloat("savingsAccountDeposit");
 					float swithdraw = rs.getFloat("savingsAccountWithdrawl");
-					
+					if(age>15) {
 					String b = "\n Banker Account: "+ id + "\n Name: " + first_name +" "+ last_name + "\n Age: "+age 
 							+ "\n Guardian Name: "+guardn+ "\n  Checking Account Balance: "
 								+ CheckingAccountBalance+ "\n Recent deposit: "+cdeposit + "\n Recent withdraw: " + cwithdraw+ "\n Savings Account Balance: "
 									+ setSavingsAccountBalance + "\n Recent deposit: "+sdeposit +"\n Recent withdraw: " + swithdraw+ "\n ";
 					System.out.println(b);
+				}else {
+					String b = "\n Banker Account: "+ id + "\n Name: " + first_name +" "+ last_name + "\n Age: "+age 
+							+ "\n Guardian Name: "+guardn+ "\n Savings Account Balance: "
+									+ setSavingsAccountBalance + "\n Recent deposit: "+sdeposit +"\n Recent withdraw: " + swithdraw+ "\n ";
+					System.out.println(b);
 				}}
+					}
 			
 				
 				
@@ -522,27 +535,27 @@ Scanner sc = new Scanner(System.in);
 					e.printStackTrace();
 				}
 				
-		sc.close();	
+		   	
 			
 			return allBankerFileAccount;
 			}
 	
 private  void rejectCustomerFiles(int banker_id, int id) {
-		Scanner sc = new Scanner(System.in);
 		
-		 
+		
+	scan.nextLine();
 			
 			 System.out.println("What is your name? ");
-			    String name = sc.nextLine();
+			    String name = scan.nextLine();
 			    
 			    System.out.println("What is the banker's name? ");
-			    String bname = sc.nextLine();
+			    String bname = scan.nextLine();
 			    
 			    System.out.println("What is the banker's email? ");
-			    String email = sc.nextLine();
+			    String email = scan.nextLine();
 			    
 			    System.out.println("What is your reason for rejecting this banker's account? ");
-			    String reason = sc.nextLine();
+			    String reason = scan.nextLine();
 		try {	    
 		
 		PreparedStatement p1s = conn.prepareStatement("insert into \"SaversSavingsBank\".rejected_applicants"
@@ -561,16 +574,16 @@ private  void rejectCustomerFiles(int banker_id, int id) {
 		if(r!=0) {
 			
 			System.out.println("\n Please input your employee_id: ");
-			   int  employee_id = sc.nextInt();
-			   sc.nextLine();
+			   int  employee_id = scan.nextInt();
+			   scan.nextLine();
 			   if(id == employee_id) {
 			   System.out.println("Enter password: ");
-			   String password = sc.nextLine();
+			   String password = scan.nextLine();
 			   
 			 
 			  
 			   PreparedStatement ps2 = conn.prepareStatement
-					   ("select * from employee_records where employee_id = ? and "
+					   ("select * from \"SaversSavingsBank\".employee_records where id = ? and "
 					   		+ "\"password\" = ? ;");
 			   ps2.setInt(1, id);
 			   ps2.setString(2, password);
@@ -578,37 +591,40 @@ private  void rejectCustomerFiles(int banker_id, int id) {
 			  
 			   if(results1.next()) {
 				   System.out.println("Are you sure you want to delete this user 'y/n'? ");
-				   String yn = sc.nextLine();
+				   String yn = scan.nextLine();
 				   
 				   if(yn.equals("y")) {
 				
 				    PreparedStatement preparedStatement1 = conn.prepareStatement
 				    		("update \"SaversSavingsBank\".banker set \"Active\" = 'N' where id = ?;");
 			        preparedStatement1.setInt(1, banker_id);
-			        preparedStatement1.executeQuery();
+			        preparedStatement1.executeUpdate();
 			        
 			       
 			        PreparedStatement preparedStatement2 = conn.prepareStatement
-			        		("delete \"SaversSavingsBank\".banker_records where "
-				    		+ "banker_id = ? );");
+			        		("delete from \"SaversSavingsBank\".banker_records where "
+				    		+ "id = ? ;");
 			        preparedStatement2.setInt(1, banker_id);
-			        preparedStatement1.executeQuery();
-			        
+			        preparedStatement1.executeUpdate();
+			       
 			         
 			        PreparedStatement preparedStatement3 = conn.prepareStatement
-			        		("delete \"SaversSavingsBank\".bankaccount where "
-				    		+ "banker_id = ? );");
+			        		("delete from \"SaversSavingsBank\".bankaccount where "
+				    		+ "id = ? ;");
 			        preparedStatement3.setInt(1, banker_id);
-			        preparedStatement1.executeQuery();
+			        preparedStatement1.executeUpdate();
 			        
 			        
 			        
 							
 							PreparedStatement ps = conn.prepareStatement
-									("select * from \"SaversSavingsBank\".banker ;");
+									("select * from \"SaversSavingsBank\".banker where id != ?;");
+							ps.setInt(1, banker_id);
 							ResultSet resultset = ps.executeQuery();
-							
-							while(resultset.next()) {
+							PreparedStatement ps1 = conn.prepareStatement("select * from \"SaversSavingsBank\".banker_records where id !=?;");
+							ps1.setInt(1, banker_id);
+							ResultSet result = ps1.executeQuery();
+							while(resultset.next() && result.next()) {
 								int bank_id = resultset.getInt("id");
 								String first_name = resultset.getString("first_name");
 								String last_name = resultset.getString("last_name");
@@ -621,8 +637,8 @@ private  void rejectCustomerFiles(int banker_id, int id) {
 								String gunum = resultset.getString("guardian#");
 								
 								
-								String user = resultset.getString("username");
-								String pass = resultset.getString("password");
+								String user = result.getString("username");
+								String pass = result.getString("password");
 								
 								String b = "\n Banker Account: "+ bank_id + "\n Name: " + 
 								first_name +" "+ last_name + "\n Age: "+age + "\n Email: "+ bankemail+
@@ -643,18 +659,21 @@ private  void rejectCustomerFiles(int banker_id, int id) {
 						e.printStackTrace();
 					}
 			  
-		sc.close();}
+		   }
 	
 	
 	
 
 private  void terminateEmployeeFile(int emp_id, int id) {
-	Scanner sc = new Scanner(System.in);
+
 	
-	System.out.println("Hello Geoff. To terminate an employee's account please enter your username and password below: \n Username:");
-	String username = sc.nextLine();
+	
+	scan.nextLine();
+	System.out.println("Hello Zayyan. To terminate an employee's account please enter your username and password below: \n Username:");
+	String username = scan.nextLine();
 	System.out.println("Password: ");
-	String password = sc.nextLine();
+	String password = scan.nextLine();
+	if(username.equals("zswaby")) {
 	String bankman = "select * from \"SaversSavingsBank\".employee_records where username = 'gwiggins' and \"password\" = ?;";//input username but not the password
 PreparedStatement ps1;
 
@@ -669,11 +688,11 @@ try {
 			
 			
 			   System.out.println("Are you sure you want to delete this user 'y/n'? ");
-			   String yn = sc.nextLine();
+			   String yn = scan.nextLine();
 			   if(yn.equals("y")) {
 					
 				    PreparedStatement preparedStatement1 = conn.prepareStatement
-				    		("update \"SaversSavingsBank\".employee set \"Active\" = 'N' where id = ?;");
+				    		("update \"SaversSavingsBank\".employee set active = 'N' where id = ?;");
 			        preparedStatement1.setInt(1, emp_id);
 			        preparedStatement1.executeQuery();
 			        
@@ -730,14 +749,22 @@ try {
 					e.printStackTrace();
 				}
 		 
-	sc.close();
+	   
 }
 
 
+
+else {
+	System.out.println("Sorry you are not authorized to access this part of the application. Please log back in and choose another option on the menu.");
+	EmployeeLogin ea = new EmployeeLogin();
+	ea.display();
+	
+}
 }
 
+
 	
-	
+}
 	
 	
 	

@@ -2,14 +2,21 @@ package bank.employee.hub;
 
 import java.util.Scanner;
 
+import bank.exceptions.UserNotFoundException;
+
 public class EmployeeStartupPage {
 	
 	private static Scanner sc = new Scanner(System.in);
 	public static void main(String[] args) {
-		EmployeeStartupPage esp = new EmployeeStartupPage();
+		try {
+			EmployeeStartupPage esp = new EmployeeStartupPage();
+		} catch (UserNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-private  EmployeeStartupPage() {
+private  EmployeeStartupPage() throws UserNotFoundException {
 	super();
 	System.out.println("Hello. Welcome to the Starters Savings Savings Bank. We are a bank that caters to "
 			+ "young adults to teach them how \n to start saving their money in order to become a fiscally responsible "
@@ -21,7 +28,7 @@ private  EmployeeStartupPage() {
 		switch(j) {
 		case 1:
 			EmployeeRegistration nbr= new EmployeeRegistration();
-			nbr.display();
+			nbr.bankWoman();
 			
 			break;
 		case 2: 
