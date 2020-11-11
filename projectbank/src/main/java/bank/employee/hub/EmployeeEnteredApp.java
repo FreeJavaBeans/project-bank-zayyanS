@@ -94,7 +94,7 @@ public class EmployeeEnteredApp {
 			rejectCustomerFiles(delban, employee_id);
 			break;
 		case 11: 
-			System.out.println("Application terminated. Good bye!");
+			System.out.println("Application in now closed. Good bye!");
 			break;
 			
 		default: 
@@ -103,7 +103,7 @@ public class EmployeeEnteredApp {
 			
 		}
 		
-		}while(input !=10 );
+		}while(input !=11 );
 		
 		
 	}
@@ -163,7 +163,7 @@ private  void seeAllEmployeeInfo() {
 		if(r1.next()) {
 		
 		
-			String all = "select * from \"SaversSavingsBank\".employees order by id;";
+			String all = "select * from \"SaversSavingsBank\".employees where activity = 'Y' order by id;";
 			PreparedStatement ps = conn.prepareStatement(all);
 			ResultSet r = ps.executeQuery();
 			String allInfo = "select * from \"SaversSavingsBank\".employee_records order by id;"; 
@@ -602,14 +602,14 @@ private  void rejectCustomerFiles(int banker_id, int id) {
 			        
 			       
 			        PreparedStatement preparedStatement2 = conn.prepareStatement
-			        		("delete from \"SaversSavingsBank\".banker_records where "
+			        		("update \"SaversSavingsBank\".banker_records set \"password\" = 'null' where "
 				    		+ "id = ? ;");
 			        preparedStatement2.setInt(1, banker_id);
 			        preparedStatement1.executeUpdate();
 			       
 			         
 			        PreparedStatement preparedStatement3 = conn.prepareStatement
-			        		("delete from \"SaversSavingsBank\".bankaccount where "
+			        		("update \"SaversSavingsBank\".bankaccount set email = '  ' where "
 				    		+ "id = ? ;");
 			        preparedStatement3.setInt(1, banker_id);
 			        preparedStatement1.executeUpdate();
@@ -618,11 +618,11 @@ private  void rejectCustomerFiles(int banker_id, int id) {
 			        
 							
 							PreparedStatement ps = conn.prepareStatement
-									("select * from \"SaversSavingsBank\".banker where id != ?;");
-							ps.setInt(1, banker_id);
+									("select * from \"SaversSavingsBank\".banker where \"Active\" = 'Y' order by id;");
+							
 							ResultSet resultset = ps.executeQuery();
-							PreparedStatement ps1 = conn.prepareStatement("select * from \"SaversSavingsBank\".banker_records where id !=?;");
-							ps1.setInt(1, banker_id);
+							PreparedStatement ps1 = conn.prepareStatement("select * from \"SaversSavingsBank\".banker_records where \"password\" != 'null' order by id;");
+							
 							ResultSet result = ps1.executeQuery();
 							while(resultset.next() && result.next()) {
 								int bank_id = resultset.getInt("id");
@@ -663,7 +663,6 @@ private  void rejectCustomerFiles(int banker_id, int id) {
 	
 	
 	
-
 private  void terminateEmployeeFile(int emp_id, int id) {
 
 	
@@ -674,7 +673,7 @@ private  void terminateEmployeeFile(int emp_id, int id) {
 	System.out.println("Password: ");
 	String password = scan.nextLine();
 	if(username.equals("zswaby")) {
-	String bankman = "select * from \"SaversSavingsBank\".employee_records where username = 'gwiggins' and \"password\" = ?;";//input username but not the password
+	String bankman = "select * from \"SaversSavingsBank\".employee_records where username = 'zswaby' and \"password\" = ?;";//input username but not the password
 PreparedStatement ps1;
 
 Set<EmployeeRegistration> allEmployeesInfo = new HashSet<EmployeeRegistration>();
@@ -682,7 +681,7 @@ try {
 	ps1 = conn.prepareStatement(bankman);
 	ps1.setString(1, password);
 	ResultSet r1 = ps1.executeQuery();
-	if(username.equals("gwiggins")) {
+	if(username.equals("zswaby")) {
 		if(r1.next()) {
 		    
 			
@@ -692,43 +691,45 @@ try {
 			   if(yn.equals("y")) {
 					
 				    PreparedStatement preparedStatement1 = conn.prepareStatement
-				    		("update \"SaversSavingsBank\".employee set active = 'N' where id = ?;");
+				    		("update \"SaversSavingsBank\".employees set activity = 'N' where id = ?;");
 			        preparedStatement1.setInt(1, emp_id);
-			        preparedStatement1.executeQuery();
+			        preparedStatement1.executeUpdate();
 			        
 			       
 			        PreparedStatement preparedStatement2 = conn.prepareStatement
-			        		("update \"SaversSavingsBank\".employee_records set \"password\" = null where id = ?;");
+			        		("delete from \"SaversSavingsBank\".employee_records where id = ?;");
 			        preparedStatement2.setInt(1, emp_id);
-			        preparedStatement1.executeQuery();
+			        preparedStatement1.executeUpdate();
 			        
 			         
 			        
 							PreparedStatement ps = conn.prepareStatement
-									("select * from \"SaversSavingsBank\".employee ;");
+									("select * from \"SaversSavingsBank\".employees where activity = 'Y' order by id;");
 							ResultSet resultset = ps.executeQuery();
 							
-							while(resultset.next()) {
+							PreparedStatement ps2 = conn.prepareStatement
+									("select * from \"SaversSavingsBank\".employee_records  order by id;");
+							ResultSet resultset1 = ps2.executeQuery();
+							
+							
+							while(resultset.next() && resultset1.next()) {
 								int bank_id = resultset.getInt("id");
 								String first_name = resultset.getString("first_name");
 								String last_name = resultset.getString("last_name");
 								int age = resultset.getInt("age");
 								String bankemail = resultset.getString("email");
-								long contact = resultset.getLong("contact#");
-								String address = resultset.getString("address");
-								String guardn = resultset.getString("guardianname");
-								int guarda = resultset.getInt("guardian_age");
-								String gunum = resultset.getString("guardian#");
+								long contact = resultset.getLong("contact");
+								String jobtitle = resultset.getString("jobtitle");
 								
+							
 								
-								String user = resultset.getString("username");
-								String pass = resultset.getString("password");
+								String user = resultset1.getString("username");
+								String pass = resultset1.getString("password");
 								
 								String b = "\n Banker Account: "+ bank_id + "\n Name: " + 
 								first_name +" "+ last_name + "\n Age: "+age + "\n Email: "+ bankemail+
-										"\n Contact Number: " + contact + "\n Address: "+ 
-								address + "\n Guardian Name: "+guardn+ "\n Guardian Age: "+guarda + 
-								"\n Guardian Contact Number: " + gunum+ "\n Username: "+ user +
+										"\n Contact Number: " + contact + "\n Jobtitle: "+ 
+								jobtitle +  "\n Username: "+ user +
 								"\n Password: "+ pass + "\n ";
 								
 								System.out.println(b);

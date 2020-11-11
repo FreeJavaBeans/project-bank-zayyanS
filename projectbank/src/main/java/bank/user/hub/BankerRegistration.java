@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import bank.banker.hub.BankerLogin;
+import bank.banker.hub.BankerStartUpPage;
+import bank.exceptions.UserNotFoundException;
 import bank.exceptions.UserSignUpFailedException;
 import bank.util.ConnectionUtil;
 
@@ -32,6 +35,7 @@ public final  class BankerRegistration implements UserRegistration{
     
 	
 	
+   
 	public void display() {
 		// TODO Auto-generated method stub
 		System.out.println("Hello. Please fill in all of the information. \n Name: " );
@@ -111,11 +115,17 @@ guardianname = sc.nextLine();
 			catch(UserSignUpFailedException e) {
 				e.printStackTrace();
 			}
+				
+			
 			CustomerNewAccount ca = new CustomerNewAccount();
 			if(age1<16) {
 				ca.newBankAccount( );
 				
 			}else {ca.newBankAccountPlus();}
+			
+			
+			
+			
 		    
 		}
 
@@ -152,7 +162,7 @@ int result = preparedStatement.executeUpdate();
 
 
 			            
-       System.out.println(preparedStatement);
+       //System.out.println(preparedStatement);
        System.out.println(getUsername());
        
        // Step 3: Execute the query or update query
@@ -183,7 +193,7 @@ int result = preparedStatement.executeUpdate();
 		// TODO Auto-generated method stub
 		Connection con = cu.getConnection();
 		int result;
-		 String registerUser = "INSERT INTO \"SaversSavingsBank\".banker( first_name, last_name, \"age\", email, \"contact#\", address, guardianname, guardian_age, \"guardian#\") VALUES(?, ?, ?, ?, ?, ?, ? ,? ,?);";
+		 String registerUser = "INSERT INTO \"SaversSavingsBank\".banker( first_name, last_name, \"age\", email, \"contact#\", address, guardianname, guardian_age, \"guardian#\", \"Active\", datejoined) VALUES(?, ?, ?, ?, ?, ?, ? ,? ,?, 'Y', now());";
 
 				        try {
 
@@ -199,12 +209,12 @@ int result = preparedStatement.executeUpdate();
 				            preparedStatement.setString(7, getGuardianname());
 				            preparedStatement.setInt(8, getAge2());
 				            preparedStatement.setString(9, getGuardiancontact());
-				              result = preparedStatement.executeUpdate();
+				             result = preparedStatement.executeUpdate();
 				           
  
 
     			            
-            System.out.println(preparedStatement);
+            //System.out.println(preparedStatement);
            
             
             // Step 3: Execute the query or update query

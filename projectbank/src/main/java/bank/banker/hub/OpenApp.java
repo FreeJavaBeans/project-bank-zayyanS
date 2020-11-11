@@ -31,20 +31,20 @@ public class OpenApp {
 	
 	
 	private static final Logger logger = LogManager.getLogger(OpenApp.class); 
-	
+	private static Scanner scan = new Scanner(System.in);
 	
 	
 	public OpenApp(int mybanker_id, int age1) {
 		super();
 		PropertyConfigurator.configure("log4j.properties");  
-		 Scanner scan = new Scanner(System.in);
+		 
 		 int input;
 		 
 		 int banker_id;
 		if(age1 >=16 && age1<=19){
 			do {
 		
-		System.out.println("Welcome to Savers Savings Bank. Please choose a number between 1 - 5 \n 1. View your account \n 2. Make a deposit into a checking account \n 3. Make a withdraw from your checking account \n 4. Make a deposit into a savings account \n 5. Make a withdraw from your savings account. \n 6. Exit app");
+		System.out.println("Welcome to Starters Savers Savings Bank. Please review our menu and choose a number between 1 - 6 \n 1. View your account \n 2. Make a deposit into a checking account \n 3. Make a withdraw from your checking account \n 4. Make a deposit into a savings account \n 5. Make a withdraw from your savings account. \n 6. Log out of banking application");
 		input = scan.nextInt();
 		
 		switch(input) {
@@ -57,29 +57,76 @@ public class OpenApp {
 			System.out.println("What is the banker id of the account you would like to make the deposit? ");
 			 banker_id = scan.nextInt();
 			System.out.println("How much would you like to deposit? ");
-			double deposit = scan.nextInt();
+			double deposit = scan.nextDouble();
+			
+
+			try {
+				PreparedStatement ps = conn.prepareStatement("select * from \"SaversSavingsBank\".bankaccount where id = "+mybanker_id+";");
+				ResultSet r = ps.executeQuery();
+				if(r.next()) {
+					 
+					 double savingsaccountbalance = r.getDouble("savingsaccountbalance");
+					if (savingsaccountbalance < deposit ){
+						System.out.println("Insufficient funds. You're Savings Account does not have the correct funds to commit this action. ");
+						logger.fatal("Bank account: "+mybanker_id+" has insufficient funds. ");}
+					else {
+			
 			withdrawlSavings(deposit, mybanker_id);
 			depositChecking(deposit, banker_id);
 			
 			myBankAccount(mybanker_id);
 			
 			logger.info("Bank Acount: "+ mybanker_id+ " sent $"+deposit );
-		      logger.info("Bank Acount: "+ banker_id+ " recieved $"+deposit +"into checking account");
-			
+		      logger.info("Bank Acount: "+ banker_id+ " recieved $"+deposit +" into checking account");
+		}
+		
+			}
+		
+		
+		
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 			break;
 			
 		case 3: 
 			System.out.println("This withdraw will go into your savings account.");
 			System.out.println("How much would you like to deposit? ");
-			double withdraw = scan.nextInt();
+			double withdraw = scan.nextDouble();
+			
+			
+
+			try {
+				PreparedStatement ps = conn.prepareStatement("select * from \"SaversSavingsBank\".bankaccount where id = "+mybanker_id+";");
+				ResultSet r = ps.executeQuery();
+				if(r.next()) {
+					 
+					 double savingsaccountbalance = r.getDouble("checkingaccountbalance");
+					if (savingsaccountbalance < withdraw ){
+						System.out.println("Insufficient funds. You're Checking Account does not have the correct funds to commit this action. ");
+						logger.fatal("Bank account: "+mybanker_id+" has insufficient funds. ");}
+					else {
+			
 			withdrawlChecking(withdraw, mybanker_id);
 			depositChecking(withdraw, mybanker_id);
 			
 			myBankAccount(mybanker_id);
 			
 			logger.info("Bank Acount: "+ mybanker_id+ " sent $"+withdraw);
-			logger.info("Bank Acount: "+ mybanker_id+ " recieved $"+withdraw + "into checking account");
-			
+			logger.info("Bank Acount: "+ mybanker_id+ " recieved $"+withdraw + " into checking account");
+		}
+		
+			}
+		
+		
+		
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 			break;
 			
 		case 4:
@@ -87,34 +134,91 @@ public class OpenApp {
 			System.out.println("What is the banker id of the account you would like to make the deposit? ");
 			 banker_id = scan.nextInt();
 			System.out.println("How much would you like to deposit? ");
-			double withdrawl = scan.nextInt();
+			double withdrawl = scan.nextDouble();
+			
+			
+			
+			try {
+				PreparedStatement ps = conn.prepareStatement("select * from \"SaversSavingsBank\".bankaccount where id = "+mybanker_id+";");
+				ResultSet r = ps.executeQuery();
+				if(r.next()) {
+					 
+					 double savingsaccountbalance = r.getDouble("checkingaccountbalance");
+					if (savingsaccountbalance < withdrawl ){
+						System.out.println("Insufficient funds. You're Checking Account does not have the correct funds to commit this action. ");
+						logger.fatal("Bank account: "+mybanker_id+" has insufficient funds. ");}
+					else {
 			withdrawlChecking(withdrawl, mybanker_id);
 			depositSavings(withdrawl, banker_id);
 			
 			myBankAccount(mybanker_id);
 			
 			logger.info("Bank Acount: "+ mybanker_id+ " sent $"+withdrawl );
-			logger.info("Bank Acount: "+ banker_id+ " recieved $"+withdrawl + "into savings account");
+			logger.info("Bank Acount: "+ banker_id+ " recieved $"+withdrawl + " into savings account");
+}
+					
+				}
 			
+			
+			
+			
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			break;
 			
 		case 5: 
+			
+			
+			
 			System.out.println("This withdraw will go into your checking account.");
 			System.out.println("How much would you like to withdraw? ");
-			double withdrawll = scan.nextInt();
-			withdrawlSavings(withdrawll, mybanker_id);
-			depositChecking(withdrawll, mybanker_id);
+			double withdrawll = scan.nextDouble();
 			
-			myBankAccount(mybanker_id);
 			
-			logger.info("Bank Acount: "+ mybanker_id+ " sent $"+withdrawll);
-			logger.info("Bank Acount: "+ mybanker_id+ " recieved $"+withdrawll + "into checking account");
+			
+			
+			try {
+				PreparedStatement ps = conn.prepareStatement("select * from \"SaversSavingsBank\".bankaccount where id = "+mybanker_id+";");
+				ResultSet r = ps.executeQuery();
+				if(r.next()) {
+					 
+					 double savingsaccountbalance = r.getDouble("savingsaccountbalance");
+					if (savingsaccountbalance < withdrawll ){
+						System.out.println("Insufficient funds. You're Savings Account does not have the correct funds to commit this action. ");
+						logger.fatal("Bank account: "+mybanker_id+" has insufficient funds. ");
+					}
+					else {
+						
+						
+						withdrawlSavings(withdrawll, mybanker_id);
+						depositChecking(withdrawll, mybanker_id);
+						
+						myBankAccount(mybanker_id);
+						
+						logger.info("Bank Acount: "+ mybanker_id+ " sent $"+withdrawll);
+						logger.info("Bank Acount: "+ mybanker_id+ " recieved $"+withdrawll + " into checking account");
+						
+						
+					}
+					
+				}
+			
+			
+			
+			
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			
 			
 			break;
 			
 		case 6:
-			System.out.println("Application terminated. Good bye!");
+			System.out.println("Application is now closed. Good bye!");
 			break;
 			
 		default: 
@@ -128,7 +232,7 @@ public class OpenApp {
 		else {
 			do {
 				
-				System.out.println("Welcome to Savers Savings Bank. Please choose a number between 1 - 3 \n 1. View your account \n 2. Make a deposit into a savings account \n 3.Exit app");
+				System.out.println("Welcome to Savers Savings Bank. Please choose a number between 1 - 3 \n 1. View your account \n 2. Make a deposit into a savings account \n 3.Log out of banking application");
 				input = scan.nextInt();
 				
 				switch(input) {
@@ -144,20 +248,52 @@ public class OpenApp {
 					System.out.println("What is the banker id of the account you would like to make the deposit? ");
 					banker_id = scan.nextInt();
 					System.out.println("How much would you like to deposit? ");
-					double deposit = scan.nextInt();
-					depositSavings(deposit, banker_id);
-					withdrawlSavings(deposit, mybanker_id);
+					double deposit = scan.nextDouble();
 					
-					myBankAccount(mybanker_id);
 					
-					logger.info("Bank Acount: "+ mybanker_id+ " sent $"+deposit);
-					logger.info("Bank Acount: "+ banker_id+ " recieved $"+deposit + "into savings account");
+					try {
+						PreparedStatement ps = conn.prepareStatement("select * from \"SaversSavingsBank\".bankaccount where id = "+mybanker_id+";");
+						ResultSet r = ps.executeQuery();
+						if(r.next()) {
+							 
+							 double savingsaccountbalance = r.getDouble("savingsaccountbalance");
+							if (savingsaccountbalance < deposit ){
+								System.out.println("Insufficient funds. You're Savings Account does not have the correct funds to commit this action. ");
+								logger.fatal("Bank account: "+mybanker_id+" has insufficient funds. ");}
+							else {
+								
+								
+								depositSavings(deposit, banker_id);
+								withdrawlSavings(deposit, mybanker_id);
+								
+								myBankAccount(mybanker_id);
+								
+								logger.info("Bank Acount: "+ mybanker_id+ " sent $"+deposit);
+								logger.info("Bank Acount: "+ banker_id+ " recieved $"+deposit + " into savings account");
+								
+								
+							}
+							
+						}
+					
+					
+					
+					
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					
+					
+					
+					
 					
 					break;
 					
 				case 3: 
 					
-					System.out.println("Application terminated. Good bye!");
+					System.out.println("Application is now closed. Good bye!");
 					break;
 				default: 
 						System.out.println("Invalid menu option. Try again \n");
@@ -168,7 +304,7 @@ public class OpenApp {
 				}while(input !=3 );
 		}
 		
-	scan.close();
+	
 	}
 	
 	public OpenApp() {
@@ -177,7 +313,7 @@ public class OpenApp {
 
 	
 	protected void myBankAccount(int banker_id) {
-		Scanner sc = new Scanner(System.in);
+		
 		
 		
 		
@@ -193,12 +329,14 @@ public class OpenApp {
 						int id = r.getInt("id");
 						String email = r.getString("email");
 						int age = r.getInt("age");
+						
 						float CheckingAccountBalance = r.getFloat("checkingAccountBalance");
 						float cdeposit = r.getFloat("checkingAccountDeposit");
 						float cwithdraw = r.getFloat("checkingAccountWithdrawl");
 						float setSavingsAccountBalance = r.getFloat("savingsAccountBalance");
 						float sdeposit = r.getFloat("savingsAccountDeposit");
 						float swithdraw = r.getFloat("savingsAccountWithdrawl");
+						
 					if(age < 16) {
 						String b = "My Account Info: \n Id: " + id + "\n Age: " + age +
 								"\n Email: " 
@@ -224,7 +362,7 @@ public class OpenApp {
 						e.printStackTrace();
 					}
 					
-			sc.close();	
+				
 				
 				
 			}
@@ -234,7 +372,7 @@ public class OpenApp {
 	protected void depositChecking(double deposit, int banker_id) {
 		 
 		 
-		 String depositChecking = "update \"SaversSavingsBank\".bankaccount set checkingHistory = now(), checkingaccountbalance = checkingaccountbalance + ?, checkingaccountdeposit = ? where id = ?;" ;
+		 String depositChecking = "update \"SaversSavingsBank\".bankaccount set checkinghistory = now(), checkingaccountbalance = checkingaccountbalance + ?, checkingaccountdeposit = ? where id = ?;" ;
 		 PropertyConfigurator.configure("log4j.properties");
 	 try {
 		 PreparedStatement ps = conn.prepareStatement(depositChecking);
@@ -247,7 +385,7 @@ public class OpenApp {
 			   
 			 
 		      
-		      //logger.debug("Sample debug message");
+		      //logger.info("Sample info message");
 		 }
 		 else {
 			 System.out.println("Deposit imcomplete.");
@@ -269,7 +407,7 @@ public class OpenApp {
 	protected void depositSavings(double deposit, int banker_id) {
 		 
 		PropertyConfigurator.configure("log4j.properties");
-		 String depositChecking = "update \"SaversSavingsBank\".bankaccount set savingsaccounthistory = now(), savingsaccountbalance = savingsaccountbalance + ?, savingsaccountdeposit = ? where id = ?;" ;
+		 String depositChecking = "update \"SaversSavingsBank\".bankaccount set savingshistory = now(), savingsaccountbalance = savingsaccountbalance + ?, savingsaccountdeposit = ? where id = ?;" ;
 	
 	 try {
 		 PreparedStatement ps = conn.prepareStatement(depositChecking);
@@ -300,7 +438,7 @@ public class OpenApp {
 	protected void withdrawlChecking(double withdrawl, int banker_id) {
 		 
 		PropertyConfigurator.configure("log4j.properties");
-		 String withdrawlChecking = "update \"SaversSavingsBank\".bankaccount set checkingaccounthistory = now(), checkingaccountbalance = checkingaccountbalance - ?, checkingaccountdeposit = ? where id = ?;" ;
+		 String withdrawlChecking = "update \"SaversSavingsBank\".bankaccount set checkinghistory = now(), checkingaccountbalance = checkingaccountbalance - ?, checkingaccountwithdrawl = -? where id = ?;" ;
 	
 	 try {
 		 PreparedStatement ps = conn.prepareStatement(withdrawlChecking);
@@ -327,10 +465,13 @@ public class OpenApp {
 	 }
 	 
 	 }	 
+	
+	
+	
 	protected void withdrawlSavings(double withdrawl, int banker_id) {
 		 
 		PropertyConfigurator.configure("log4j.properties");
-		 String withdrawlChecking = "update \"SaversSavingsBank\".bankaccount set savingsaccounthistory = now(), savingsaccountbalance = savingsaccountbalance - ?, savingsaccountdeposit = ? where id = ?;" ;
+		 String withdrawlChecking = "update \"SaversSavingsBank\".bankaccount set savingshistory = now(), savingsaccountbalance = savingsaccountbalance - ?, savingsaccountwithdrawl = -? where id = ?;" ;
 	
 	 try {
 		 PreparedStatement ps = conn.prepareStatement(withdrawlChecking);
@@ -359,9 +500,6 @@ public class OpenApp {
 
 
 
-	
-	
-	
 	
 	
 	

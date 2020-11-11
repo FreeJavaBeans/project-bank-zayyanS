@@ -23,9 +23,10 @@ public class BankerLogin {
 	
 	
 	
-	protected static void display() {
+	public static void display() {
+		
 		System.out.println("Press enter to begin.");
-		 sc.nextLine();
+		String space= sc.nextLine();
 		System.out.println("Enter your username: ");
 	   
 		username = sc.nextLine();

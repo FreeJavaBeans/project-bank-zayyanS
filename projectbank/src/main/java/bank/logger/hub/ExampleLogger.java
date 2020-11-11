@@ -17,9 +17,10 @@ public class ExampleLogger {
 	  PropertyConfigurator.configure("log4j.properties");  
 
 logger.debug("Sample debug message");
-      logger.info("Sample info message");
+logger.fatal("Sample fatal message");     
+logger.info("Sample info message");
       logger.error("Sample error message");
-      logger.fatal("Sample fatal message");
+      
       
     
 	 }
