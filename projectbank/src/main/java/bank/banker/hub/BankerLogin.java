@@ -92,7 +92,7 @@ public class BankerLogin {
 	        else {
 do {
 	        		
-	    	        System.out.print("\n Login failed. Would you like to: \n \n 1- try again \n 2- create a new account  \n 3 - exit the application? ");
+	    	        System.out.print("\n Login failed. Would you like to: \n \n 1. Try again \n 2. Create a new account  \n 3 - Exit the application ");
 	        	      errorMess = sc.nextInt();
 	        	   } while( isVal(errorMess) );
 	        }

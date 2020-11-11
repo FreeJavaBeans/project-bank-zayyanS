@@ -44,7 +44,7 @@ public class OpenApp {
 		if(age1 >=16 && age1<=19){
 			do {
 		
-		System.out.println("Welcome to Starters Savers Savings Bank. Please review our menu and choose a number between 1 - 6 \n 1. View your account \n 2. Make a deposit into a checking account \n 3. Make a withdraw from your checking account \n 4. Make a deposit into a savings account \n 5. Make a withdraw from your savings account. \n 6. Log out of banking application");
+		System.out.println("Welcome to Starters Savers Savings Bank. Please review our menu and choose a number between 1 - 6 \n \n -------------------------Menu-----------------------\n\n         1. View your account \n         2. Make a deposit into a checking account \n         3. Make a withdraw from your checking account \n         4. Make a deposit into a savings account \n         5. Make a withdraw from your savings account. \n         6. Log out of banking application \n \n  ----------------------------------------------------\n \n ");
 		input = scan.nextInt();
 		
 		switch(input) {
@@ -93,7 +93,7 @@ public class OpenApp {
 			
 		case 3: 
 			System.out.println("This withdraw will go into your savings account.");
-			System.out.println("How much would you like to deposit? ");
+			System.out.println("How much would you like to withdraw? ");
 			double withdraw = scan.nextDouble();
 			
 			
@@ -232,7 +232,7 @@ public class OpenApp {
 		else {
 			do {
 				
-				System.out.println("Welcome to Savers Savings Bank. Please choose a number between 1 - 3 \n 1. View your account \n 2. Make a deposit into a savings account \n 3.Log out of banking application");
+				System.out.println("Welcome to Savers Savings Bank. Please choose a number between 1 - 3 \n \n -------------------------Menu-----------------------\n \n         1. View your account \n         2. Make a deposit into a savings account \n         3.Log out of banking application \n \n ----------------------------------------------------\n \n ");
 				input = scan.nextInt();
 				
 				switch(input) {
@@ -369,8 +369,8 @@ public class OpenApp {
 	
 	
 	
-	protected void depositChecking(double deposit, int banker_id) {
-		 
+	public void ExampledepositChecking(double deposit) {
+		 int banker_id = 1;
 		 
 		 String depositChecking = "update \"SaversSavingsBank\".bankaccount set checkinghistory = now(), checkingaccountbalance = checkingaccountbalance + ?, checkingaccountdeposit = ? where id = ?;" ;
 		 PropertyConfigurator.configure("log4j.properties");
@@ -381,16 +381,16 @@ public class OpenApp {
 		 ps.setInt(3, banker_id);
 		 int r = ps.executeUpdate();
 		 if(r !=0) {
-			 System.out.println("Deposit complete!");
+			 System.out.println("Action complete!");
 			   
 			 
 		      
-		      //logger.info("Sample info message");
+		      logger.info("example deposit message. delete after viewing");
 		 }
 		 else {
 			 System.out.println("Deposit imcomplete.");
 			 BasicConfigurator.configure();
-			 logger.error("Bank Acount: "+ banker_id+ " failed to recieve a deposit of $"+deposit);
+			 logger.info("example deposit message. delete after viewing");
 		 }
 		 
 		 
@@ -399,7 +399,7 @@ public class OpenApp {
 	 System.out.println("SQL imcomplete");
 	 
 	 BasicConfigurator.configure();
-	 logger.fatal("Bank Acount: "+ banker_id+ " ULTIMATELY FAILED to recieve a deposit of $"+deposit);
+	 logger.info("example deposit message. delete after viewing");
 	 }
 	 
 	 
@@ -416,7 +416,7 @@ public class OpenApp {
 		 ps.setInt(3, banker_id);
 		 int r = ps.executeUpdate();
 		 if(r!=0) {
-			 System.out.println("Deposit complete!");
+			 System.out.println("Action complete!");
 		 }
 		 else {
 			 System.out.println("Deposit imcomplete.");
@@ -447,7 +447,7 @@ public class OpenApp {
 		 ps.setInt(3, banker_id);
 		 int r = ps.executeUpdate();
 		 if(r!=0) {
-			 System.out.println("withdrawl complete!");
+			 System.out.println("Action complete!");
 		 }
 		 else {
 			 System.out.println("Deposit imcomplete.");
@@ -480,7 +480,7 @@ public class OpenApp {
 		 ps.setInt(3, banker_id);
 		 int r = ps.executeUpdate();
 		 if(r!=0) {
-			 System.out.println("withdrawl complete!");
+			 System.out.println("Action complete!");
 		 }
 		 else {
 			 System.out.println("Deposit imcomplete.");
@@ -499,7 +499,41 @@ public class OpenApp {
 	 }	 
 
 
-
+	protected void depositChecking(double deposit, int banker_id) {
+		 
+		 
+		 String depositChecking = "update \"SaversSavingsBank\".bankaccount set checkinghistory = now(), checkingaccountbalance = checkingaccountbalance + ?, checkingaccountdeposit = ? where id = ?;" ;
+		 PropertyConfigurator.configure("log4j.properties");
+	 try {
+		 PreparedStatement ps = conn.prepareStatement(depositChecking);
+		 ps.setDouble(1,deposit);
+		 ps.setDouble(2,deposit);
+		 ps.setInt(3, banker_id);
+		 int r = ps.executeUpdate();
+		 if(r !=0) {
+			 System.out.println("Action complete!");
+			   
+			 
+		      
+		      //logger.info("Sample info message");
+		 }
+		 else {
+			 System.out.println("Deposit imcomplete.");
+			 BasicConfigurator.configure();
+			 logger.error("Bank Acount: "+ banker_id+ " failed to recieve a deposit of $"+deposit);
+		 }
+		 
+		 
+	 }catch(SQLException e)
+	 { e.printStackTrace();
+	 System.out.println("SQL imcomplete");
+	 
+	 BasicConfigurator.configure();
+	 logger.fatal("Bank Acount: "+ banker_id+ " ULTIMATELY FAILED to recieve a deposit of $"+deposit);
+	 }
+	 
+	 
+	 }
 	
 	
 	

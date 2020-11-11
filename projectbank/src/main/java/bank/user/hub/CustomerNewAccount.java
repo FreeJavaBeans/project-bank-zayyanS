@@ -39,7 +39,7 @@ public class CustomerNewAccount {
 			System.out.println("Account creation failed.");
 		}
 		
-		sc.close();
+		
 		
 	}
 	
@@ -71,6 +71,6 @@ protected void newBankAccount( ){
 		System.out.println("Account creation failed.");
 	}
 	
-	sc.close();
+	
 	}
 }

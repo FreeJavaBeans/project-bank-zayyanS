@@ -3,16 +3,12 @@ package bank.employee.hub;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
 import bank.util.ConnectionUtil;
-import bank.banker.hub.OpenApp;
 import bank.user.hub.BankerRegistration;
 
 public class EmployeeEnteredApp {
@@ -22,13 +18,12 @@ public class EmployeeEnteredApp {
 	private static  Scanner scan = new Scanner(System.in);
 	
 	
-	
 	public EmployeeEnteredApp(){
 		super();
 	}
 	
 	
-	
+
 	protected EmployeeEnteredApp(int employee_id) {
 		super();
 		
@@ -36,10 +31,11 @@ public class EmployeeEnteredApp {
 		
 			do {
 		
-		System.out.println("Welcome Employee "+employee_id+" to the Starters Savings Savings Bank Employee Appplication.\n Please look through our menu and choose a number between 1 -11.  \n \n 1. View your account "
-				+ "\n 2. View all employee accounts \n 3. View one employee account \n 4. View all our customer information "
-				+ "\n 5. View one of our customer's information \n 6. See a log of all transactions \n 7. View all customer bank accounts \n 8. View one customer's bank account "
-				+ "\n 9. Terminate an employee record \n10. Terminate a customer account \n11. Logout of application");
+		System.out.println("Welcome Employee "+employee_id+" to the Starters Savings Savings Bank Employee Appplication.\n Please look through our menu and choose a number between 1 -4.  \n"
+				+ "\n ---------------------Menu------------------\n "
+				+ " \n         1. View your account "
+				+ "\n         2. View employee accounts \n         3. View customer accounts "
+				+ "\n         4. Logout of application \n \n -------------------------------------------");
 		 input = scan.nextInt();
 		
 		switch(input) {
@@ -49,61 +45,116 @@ public class EmployeeEnteredApp {
 			
 		case 2: 
 			
-			seeAllEmployeeInfo();
-			break;
 			
-		case 3: 
-			System.out.println("Which employee's information would you like to see? ");
-			int employ = scan.nextInt();
+			System.out.println("\n \n \n Would you like to view one or all of the employee accounts or would you like to terminate an employee account? \n ---------------------Menu------------------\n \n"
+					+ "			\n         1. View one account "
+					+ "				\n         2. View all accounts "
+					+ "\n         3. Terminate an employee account \n         4. Logout of application \n \n -------------------------------------------");
+			int choice=scan.nextInt();
 			
-			seeOneEmployeeInfo(employ);
-			break;
 			
-		case 4:
-			seeAllCustomersInfo();
-			break;
-			
-		case 5: 
-			System.out.println("Which customer's information would you like to see? ");
-			int ban = scan.nextInt();
-			seeOneCustomerInfo(ban);
-			break;
-			
-		case 7:
-			seeAllCustomerFileInfo();
-			break;
-		case 6: 
-			
-			logTransactionFiles();
-			break;
-		case 8: 
-			System.out.println("Which customer's bank account would you like to see? ");
-			int ba = scan.nextInt();
-			seeOneCustomerFileInfo(ba);
-			break;
-		case 9: 
-			System.out.println("Which employee account will you be terminating? ");
-			int delemp = scan.nextInt();
-			terminateEmployeeFile(delemp, employee_id);
-			
-			break;
-		case 10: 
-			
-			System.out.println("Which customer account will you be terminating? ");
-			int delban = scan.nextInt();
-			rejectCustomerFiles(delban, employee_id);
-			break;
-		case 11: 
-			System.out.println("Application in now closed. Good bye!");
-			break;
-			
-		default: 
-				System.out.println("Invalid menu option. Try again \n");
+			switch(choice) {
+			case 1: 
+				System.out.println("\n \n \n Which employee's information would you like to see? ");
+				int employ = scan.nextInt();
+				
+				seeOneEmployeeInfo(employ);
+				
 				break;
+			case 2: 
+				seeAllEmployeeInfo();
+				break;
+			case 3: 
+				System.out.println("Which employee account will you be terminating? ");
+				int delemp = scan.nextInt();
+				terminateEmployeeFile(delemp, employee_id);
+				break;
+			case 4: 
+				System.out.println("Application in now closed. Good bye!");
+				break; 
+			default: 
+				System.out.println("Invalid menu option. Try again \n");
+				break;     }
 			
-		}
+			break; 
+		case 3: 
+			System.out.println("\n \n \n Would you like to view the customer accounts,\n a log of all transactions or terminate a customer account? \n ---------------------Menu------------------\n \n"
+					+ "			\n         1. View one account "
+					+ "				\n         2. View all accounts \n         3. View a log of all transactions \n         4. Terminate a customer account \n         5. Logout of application \n \n -------------------------------------------");
+			int bankchoice=scan.nextInt();
+			
+			switch(bankchoice) {
+			case 1: 
+				System.out.println("Would you like to view this customer's file or bankaccount?   \n ---------------------Menu------------------\n \n"
+						+ "			\n         1. View customer's file \"\n"
+						+ "				\n         2. View customer's bank account \n         3. Logout of application \n \n -------------------------------------------");
+				int bankpick=scan.nextInt();
+				switch(bankpick) {
+				case 1: 
+					System.out.println("Which customer's information would you like to see? ");
+					int ban = scan.nextInt();
+					seeOneCustomerInfo(ban);
+					break;
+				case 2: 
+					System.out.println("Which customer's bank account would you like to see? ");
+					int ba = scan.nextInt();
+					seeOneCustomerFileInfo(ba);
+					break;
+				case 3: 
+				 
+					System.out.println("Application in now closed. Good bye!");
+					break;
+				default: 
+					System.out.println("Invalid menu option. Try again \n");
+					break;}
+				
+				
+			case 2: 
+				
+				System.out.println("\n \n \n Would you like to view the customer files or the customer bankaccounts?   \n ---------------------Menu------------------\n \n"
+						+ "			\n         1. View customer files "
+						+ "				\n         2. View customer bank accounts \n         3.Logout of application \n \n -------------------------------------------");
+				int banky=scan.nextInt();
+				switch(banky) {
+				case 1: 
+					seeAllCustomersInfo();
+					break;
+				case 2: 
+					seeAllCustomerFileInfo();
+					break;
+				case 3: 
+					System.out.println("Application in now closed. Good bye!");
+					break;
+				default: 
+					System.out.println("Invalid menu option. Try again \n");
+					break;}
+				break;
+			case 3: 
+				
+				logTransactionFiles();
+				break;
+				
+			case 4: 
+				System.out.println("Which customer account will you be terminating? ");
+				int delban = scan.nextInt();
+				rejectCustomerFiles(delban, employee_id);
+				break;
+			case 5: 
+				System.out.println("Application in now closed. Good bye!");
+				break; 
+			default: 
+				System.out.println("Invalid menu option. Try again \n");
+				break;     }
+			
+			
+			break; 
+		case 4: 
+			System.out.println("Application in now closed. Good bye!"); 
+			break;
+		default: 
+			break; }
 		
-		}while(input !=11 );
+		}while(input !=4 );
 		
 		
 	}
@@ -183,9 +234,10 @@ private  void seeAllEmployeeInfo() {
 				
 				String user = rs.getString("username");
 				String pass = rs.getString("password");
+				String lastshift = rs.getString("last_shift");
 				
 				String b = "\n Employee Account: "+ id + "\n Name: " + first_name +" "+ last_name + "\n Age: "+age + "\n Email: "+ email+
-						"\n Contact Number: " + contact + "\n Jobtitle: "+ jobtitle + "\n Username: "+ user + "\n Password: "+ pass + "\n ";
+						"\n Contact Number: " + contact + "\n Jobtitle: "+ jobtitle + "\n Username: "+ user + "\n Password: "+ pass + "\n Last Login: "+lastshift+"\n";
 				System.out.println(b);
 			}}
 		else {
@@ -251,9 +303,10 @@ private  void seeOneEmployeeInfo(int employees_id) {
 				
 				String user = rs.getString("username");
 				String pass = rs.getString("password");
+				String lastshift = rs.getString("last_shift");
 				
 				String b = "\n Employee Account: "+ id + "\n Name: " + first_name +" "+ last_name + "\n Age: "+age + "\n Email: "+ email+
-						"\n Contact Number: " + contact + "\n Jobtitle: "+ jobtitle + "\n Username: "+ user + "\n Password: "+ pass + "\n ";
+						"\n Contact Number: " + contact + "\n Jobtitle: "+ jobtitle + "\n Username: "+ user + "\n Password: "+ pass + "\n Last Login: "+ lastshift+"\n";
 				System.out.println(b);
 			}}
 		else {
@@ -308,9 +361,10 @@ private  void seeMyInfo(int employee_id) {
 				
 				String user = rs.getString("username");
 				String pass = rs.getString("password");
+String lastshift = rs.getString("last_shift");
 				
 				String b = "\n Employee Account: "+ id + "\n Name: " + first_name +" "+ last_name + "\n Age: "+age + "\n Email: "+ email+
-						"\n Contact Number: " + contact + "\n Jobtitle: "+ jobtitle + "\n Username: "+ user + "\n Password: "+ pass + "\n ";
+						"\n Contact Number: " + contact + "\n Jobtitle: "+ jobtitle + "\n Username: "+ user + "\n Password: "+ pass + "\n Last Login: "+ lastshift+"\n";
 				System.out.println(b);
 			}
 		}
@@ -492,11 +546,11 @@ private  void seeMyInfo(int employee_id) {
 			
 				
 				PreparedStatement ps = conn.prepareStatement
-						("select * from \"SaversSavingsBank\".banker order by id;");
+						("select * from \"SaversSavingsBank\".banker where \"Active\" = 'Y' order by id;");
 				ResultSet r = ps.executeQuery();
 				
 				PreparedStatement prepStat = conn.prepareStatement
-						("select * from \"SaversSavingsBank\".bankaccount ;");
+						("select * from \"SaversSavingsBank\".bankaccount where email != 'null' order by id;");
 				ResultSet rs = prepStat.executeQuery();
 				
 				while(r.next() && rs.next()) {
@@ -583,8 +637,7 @@ private  void rejectCustomerFiles(int banker_id, int id) {
 			 
 			  
 			   PreparedStatement ps2 = conn.prepareStatement
-					   ("select * from \"SaversSavingsBank\".employee_records where id = ? and "
-					   		+ "\"password\" = ? ;");
+					   ("select * from \"SaversSavingsBank\".employee_records where id = ? and \"password\" = ? ;");
 			   ps2.setInt(1, id);
 			   ps2.setString(2, password);
 			   ResultSet results1 = ps2.executeQuery();
@@ -602,15 +655,13 @@ private  void rejectCustomerFiles(int banker_id, int id) {
 			        
 			       
 			        PreparedStatement preparedStatement2 = conn.prepareStatement
-			        		("update \"SaversSavingsBank\".banker_records set \"password\" = 'null' where "
-				    		+ "id = ? ;");
+			        		("update \"SaversSavingsBank\".banker_records set \"password\" = 'null' where id = ? ;");
 			        preparedStatement2.setInt(1, banker_id);
 			        preparedStatement1.executeUpdate();
 			       
 			         
 			        PreparedStatement preparedStatement3 = conn.prepareStatement
-			        		("update \"SaversSavingsBank\".bankaccount set email = '  ' where "
-				    		+ "id = ? ;");
+			        		("update \"SaversSavingsBank\".bankaccount set email = 'null' where id = ? ;");
 			        preparedStatement3.setInt(1, banker_id);
 			        preparedStatement1.executeUpdate();
 			        
@@ -725,12 +776,13 @@ try {
 								
 								String user = resultset1.getString("username");
 								String pass = resultset1.getString("password");
+								String lastshift = resultset1.getString("last_shift");
 								
 								String b = "\n Banker Account: "+ bank_id + "\n Name: " + 
 								first_name +" "+ last_name + "\n Age: "+age + "\n Email: "+ bankemail+
 										"\n Contact Number: " + contact + "\n Jobtitle: "+ 
 								jobtitle +  "\n Username: "+ user +
-								"\n Password: "+ pass + "\n ";
+								"\n Password: "+ pass + "\n Last Login: "+ lastshift+"\n";
 								
 								System.out.println(b);
 								}

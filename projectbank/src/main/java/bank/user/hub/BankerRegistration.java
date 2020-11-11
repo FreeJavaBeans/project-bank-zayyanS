@@ -58,8 +58,9 @@ public final  class BankerRegistration implements UserRegistration{
 	//age must be under 20 years old and kids over 16 can open a checking account
 			 
 		if(age1>=20) {
-			System.out.println("Sorry, but you do not fit the criteria to open an account with us. If you have any questions or concerns please contact your local bank and speak ask to speak with a manager. ");
+			System.out.println("Sorry, but you do not fit the criteria to open an account with us. \n If you have any questions or concerns please contact your local bank and ask to speak with a manager. ");
 		}
+		else {
 		
 		
 	
@@ -117,11 +118,15 @@ guardianname = sc.nextLine();
 			}
 				
 			
-			CustomerNewAccount ca = new CustomerNewAccount();
+			
 			if(age1<16) {
-				ca.newBankAccount( );
+				CustomerNewAccount ca = new CustomerNewAccount();
+				ca.newBankAccount();
 				
-			}else {ca.newBankAccountPlus();}
+			}
+			else {
+				CustomerNewAccount ca = new CustomerNewAccount();
+				ca.newBankAccountPlus();}}
 			
 			
 			
