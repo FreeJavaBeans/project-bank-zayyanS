@@ -27,7 +27,7 @@ public class EmployeeLogin {
 	
 	
 	
-	protected void display() {
+	public void display() {
 		System.out.println("Press enter to begin.");
 		 sc.nextLine();
 		System.out.println("Enter your username: ");

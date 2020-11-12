@@ -312,7 +312,7 @@ public class OpenApp {
 	}
 
 	
-	protected void myBankAccount(int banker_id) {
+	public void myBankAccount(int banker_id) {
 		
 		
 		

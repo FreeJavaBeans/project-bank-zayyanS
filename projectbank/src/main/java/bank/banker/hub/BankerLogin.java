@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import bank.user.hub.BankerRegistration;
 import bank.util.ConnectionUtil;
 
 public class BankerLogin {

@@ -30,7 +30,7 @@ public  class EmployeeRegistration implements UserRegistration{
     private Long contact1;
     private String jobtitle;
     
-	protected void bankWoman() throws UserNotFoundException {
+	public void bankWoman() throws UserNotFoundException {
 		ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
 		Connection conn = cu.getConnection();
 		

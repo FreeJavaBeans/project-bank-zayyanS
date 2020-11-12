@@ -1,7 +1,9 @@
-package bank.employee.hub;
+package bank;
 
 import java.util.Scanner;
 
+import bank.employee.hub.EmployeeLogin;
+import bank.employee.hub.EmployeeRegistration;
 import bank.exceptions.UserNotFoundException;
 
 public class EmployeeStartupPage {

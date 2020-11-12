@@ -1,9 +1,10 @@
-package bank.banker.hub;
+package bank;
 
 import java.util.Scanner;
 
+import bank.banker.hub.BankerLogin;
+import bank.banker.hub.BankerRegistration;
 import bank.exceptions.UserNotFoundException;
-import bank.user.hub.BankerRegistration;
 
 public class BankerStartUpPage {
 

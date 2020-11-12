@@ -1,4 +1,4 @@
-package bank.user.hub;
+package bank.banker.hub;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,10 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import bank.banker.hub.BankerLogin;
-import bank.banker.hub.BankerStartUpPage;
 import bank.exceptions.UserNotFoundException;
 import bank.exceptions.UserSignUpFailedException;
+import bank.user.hub.UserRegistration;
 import bank.util.ConnectionUtil;
 
 public final  class BankerRegistration implements UserRegistration{
@@ -33,7 +32,7 @@ public final  class BankerRegistration implements UserRegistration{
     private String guardiancontact;
     private String address;
     
-	
+	//Where a customer can open an account with the bank
 	
    
 	public void display() {

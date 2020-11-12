@@ -1,4 +1,4 @@
-package bank.user.hub;
+package bank.banker.hub;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +12,7 @@ public class CustomerNewAccount {
 	private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
 	private static Connection conn = cu.getConnection();
 	
+	//Where a customer's bank account will be made
 	
 	protected void newBankAccountPlus(){
 		Scanner sc = new Scanner(System.in);

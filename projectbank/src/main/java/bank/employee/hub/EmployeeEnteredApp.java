@@ -8,8 +8,8 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
+import bank.banker.hub.BankerRegistration;
 import bank.util.ConnectionUtil;
-import bank.user.hub.BankerRegistration;
 
 public class EmployeeEnteredApp {
 	private static ConnectionUtil cu = ConnectionUtil.getConnectionUtil();
